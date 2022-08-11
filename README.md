@@ -1,4 +1,4 @@
-# turtle_escort
+# escort_turtle
 
 [escort mission](https://www.youtube.com/watch?v=Glxn4xtegpg) played by 2 teams of turtlebots
 
