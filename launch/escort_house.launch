@@ -23,11 +23,21 @@
 
 
   <!-- TURTLE OF INTEREST -->
-  <arg name="move_forward_only" default="false"/>
+  <!-- <arg name="move_forward_only" default="false"/> -->
   <arg name="TOI_model" default="burger"/>
   <arg name="TOI_x" default="-2.0"/>
   <arg name="TOI_y" default="0.0"/>
+
   <param name="TOI_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_$(arg TOI_model).urdf.xacro" />
+
+  <group ns="TOI">
+    <param name="tf_prefix" value="TOI_tf" />
+    <include file="$(find escort_turtle)/launch/single_robot.launch" >
+      <arg name="init_pose" value="-x $(arg TOI_x) -y $(arg TOI_y) -z $(arg ground_z)" />
+      <arg name="robot_name"  value="TOI" />
+      <arg name="role" value="TOI"/>
+    </include>
+  </group>
 
   <!-- DEFENDING TEAM -->
   <arg name="DT_model" default="waffle"/>
@@ -36,6 +46,25 @@
   <arg name="DT1_x" default="-2.0"/>
   <arg name="DT1_y" default="-1.0"/>
   <param name="DT_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_$(arg DT_model).urdf.xacro" />
+
+  <group ns="DT0">
+    <param name="tf_prefix" value="DT0_tf" />
+    <include file="$(find escort_turtle)/launch/single_robot.launch" >
+      <arg name="init_pose" value="-x $(arg DT0_x) -y $(arg DT0_y) -z $(arg ground_z)" />
+      <arg name="robot_name"  value="DT0" />
+      <arg name="role" value="DT"/>
+    </include>
+  </group>
+  
+  <group ns="DT1">
+    <param name="tf_prefix" value="DT1_tf" />
+    <include file="$(find escort_turtle)/launch/single_robot.launch" >
+      <arg name="init_pose" value="-x $(arg DT1_x) -y $(arg DT1_y) -z $(arg ground_z)" />
+      <arg name="robot_name"  value="DT1" />
+      <arg name="role" value="DT"/>
+    </include>
+  </group>
+
 
   <!-- ATTACKING TEAM -->
   <arg name="AT_model" default="burger"/>
@@ -47,16 +76,43 @@
   <arg name="AT2_y" default="-  1.0"/>
   <param name="AT_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_$(arg AT_model).urdf.xacro" />
 
+  <group ns="AT0">
+    <param name="tf_prefix" value="AT0_tf" />
+    <include file="$(find escort_turtle)/launch/single_robot.launch" >
+      <arg name="init_pose" value="-x $(arg AT0_x) -y $(arg AT0_y) -z $(arg ground_z)" />
+      <arg name="robot_name"  value="AT0" />
+      <arg name="role" value="AT"/>
+    </include>
+  </group>
+  
+  <group ns="AT1">
+    <param name="tf_prefix" value="AT1_tf" />
+    <include file="$(find escort_turtle)/launch/single_robot.launch" >
+      <arg name="init_pose" value="-x $(arg AT1_x) -y $(arg AT1_y) -z $(arg ground_z)" />
+      <arg name="robot_name"  value="AT1" />
+      <arg name="role" value="AT"/>
+    </include>
+  </group>
+
+  <group ns="AT2">
+    <param name="tf_prefix" value="DT2_tf" />
+    <include file="$(find escort_turtle)/launch/single_robot.launch" >
+      <arg name="init_pose" value="-x $(arg AT2_x) -y $(arg AT2_y) -z $(arg ground_z)" />
+      <arg name="robot_name"  value="AT2" />
+      <arg name="role" value="AT"/>
+    </include>
+  </group>
+
  <!-- SIMULATION -->
-  <node name="spawn_TOI" pkg="gazebo_ros" type="spawn_model" args="-urdf -model TOI -x $(arg TOI_x) -y $(arg TOI_y) -z $(arg ground_z) -param TOI_description" />
-  <node name="spawn_DT0" pkg="gazebo_ros" type="spawn_model" args="-urdf -model DT0 -x $(arg DT0_x) -y $(arg DT0_y) -z $(arg ground_z) -param DT_description" />
+  <!-- <node name="spawn_TOI" pkg="gazebo_ros" type="spawn_model" args="-urdf -model TOI -x $(arg TOI_x) -y $(arg TOI_y) -z $(arg ground_z) -param TOI_description" /> -->
+  <!-- <node name="spawn_DT0" pkg="gazebo_ros" type="spawn_model" args="-urdf -model DT0 -x $(arg DT0_x) -y $(arg DT0_y) -z $(arg ground_z) -param DT_description" />
   <node name="spawn_DT1" pkg="gazebo_ros" type="spawn_model" args="-urdf -model DT1 -x $(arg DT1_x) -y $(arg DT1_y) -z $(arg ground_z) -param DT_description" />
   <node name="spawn_AT0" pkg="gazebo_ros" type="spawn_model" args="-urdf -model AT0 -x $(arg AT0_x) -y $(arg AT0_y) -z $(arg ground_z) -param AT_description" />
   <node name="spawn_AT1" pkg="gazebo_ros" type="spawn_model" args="-urdf -model AT1 -x $(arg AT1_x) -y $(arg AT1_y) -z $(arg ground_z) -param AT_description" />
-  <node name="spawn_AT2" pkg="gazebo_ros" type="spawn_model" args="-urdf -model AT2 -x $(arg AT0_x) -y $(arg AT2_y) -z $(arg ground_z) -param AT_description" />
+  <node name="spawn_AT2" pkg="gazebo_ros" type="spawn_model" args="-urdf -model AT2 -x $(arg AT0_x) -y $(arg AT2_y) -z $(arg ground_z) -param AT_description" /> -->
 
   <include file="$(find fleet_turtle)/launch/godspeed.launch">
-    <arg name="override_environment" value="$(arg override_environment)"/>
+    <!-- <arg name="override_environment" value="$(arg override_environment)"/>
     <arg name="gui" value="$(arg gui)"/>
     <arg name="model" value="$(arg TOI_model)"/>
     <arg name="x_pos" value="$(arg TOI_x)"/>
@@ -71,7 +127,7 @@
     <arg name="use_navigation_node" value="true"/>
     <arg name="use_objectives_file" value="true"/>
     <arg name="objectives_file_location" value="$(arg objectives_file_location)"/>
-  </include>  
+  </include>   -->
 
   <!--env name="GAZEBO_MODEL_PATH" value="$(find turtlebot3_big_house)/worlds"/-->
   <!-- <env name="TURTLEBOT3_MODEL" value="burger"/>
